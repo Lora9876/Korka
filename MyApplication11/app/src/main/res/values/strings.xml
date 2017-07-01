@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">KorkaQuiz</string>
+    <string name="action_about">About</string>
+    <string name="about_app">KorkaQuiz is an explorers quiz application witch allows users to explore city learning about it, test their knowledge and add their own questions.</string>
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="getting_location">Please Turn on location service on your phone and wait for a moment, then repete your request. App is currently calculating yout location.</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="label_not_an_user">Not an user?</string>
+    <string name="password_warning">Insert password, please</string>
+    <string name="user_added">New user is successfully created. Please login as </string>
+    <string name="username_taken">This username is already taken. Please try another one.</string>
+    <string name="username_warning">Insert username, please</string>
+    <string name="username_or_password_empty_warning">Fill username and password fields, please</string>
+    <string name="bad_credentials_warning">Username or password incorrect, please try again</string>
+    <string name="title_activity_register">KorkaQuiz Registration</string>
+    <string name="radius">Radius</string>
+    <string name="nextButton">Next</string>
+    <string name="cancelButton">Cancel</string>
+    <string name="pictureButton">Picture of you</string>
+
+    <string name="friends">See Your Friends</string>
+    <string name="logout">Log Out</string>
+    <string name="active_user">ACTIVE_USER</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- rs.elfak.korka1.korkaquiz.Bluetooth -->
+
+    <!--  BluetoothChat -->
+    <string name="send">Add friend</string>
+    <string name="choose_device">Choose device</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_connected_to">connected to </string>
+    <string name="title_not_connected">not connected</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <!-- Options Menu -->
+    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="insecure_connect">Connect a device - Insecure</string>
+    <string name="discoverable">Make discoverable</string>
+    <string name="title_activity_map">KorkaQuiz Map</string>
+    <string name="title_activity_rank">KorkaQuiz Ranklist</string>
+
+    <string name="server_connection_failed">Server connection has failed.</string>
+    <string name="fields_empty_warning">Please fill all the fields on the form before submiting new question.</string>
+    <string name="fields_empty_warning_register">Please fill all the fields on the form before submiting new user account.</string>
+    <string name="title_activity_device_list">DeviceListActivity</string>
+    <string name="title_activity_bluetooth_chat">BluetoothChatActivity</string>
+    <string-array name="spinner">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+</resources>

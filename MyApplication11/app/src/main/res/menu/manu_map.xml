@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MapActivity">
+
+    <item android:id="@+id/search_item" android:title="Set searching options"/>
+    <item android:id="@+id/new_item" android:title="Add new question"/>
+
+</menu>

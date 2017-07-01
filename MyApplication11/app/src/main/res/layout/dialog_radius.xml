@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout2"
+        android:padding="10sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Radius options:"
+            android:id="@+id/textView21"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Choose radius for visible users"
+            android:id="@+id/textView2"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/seekBar"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="1000"
+                android:id="@+id/textViewRadious"
+                android:inputType="number"
+                android:layout_gravity="left"
+                android:layout_weight="1" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text=""
+            android:id="@+id/textViewProgress"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_marginTop="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Users visibility options:"
+            android:id="@+id/textView22"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1">
+
+            <RadioGroup
+                android:id="@+id/radioGroupRadius"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="Show all the users on the map"
+                    android:id="@+id/radioButtonAllUsers"
+                    android:layout_weight="1"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="Show only the users that are my friends"
+                    android:id="@+id/radioButtonFriends"
+                    android:layout_weight="1" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Questions visibility options:"
+            android:id="@+id/textView12"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:weightSum="1">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show easy questions"
+                android:id="@+id/checkBoxEasy"
+                android:layout_weight="0.41"
+                android:checked="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show medium difficulty questions"
+                android:id="@+id/checkBoxMedium"
+                android:layout_weight="0.41"
+                android:checked="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show hard questions"
+                android:id="@+id/checkBoxHard"
+                android:layout_weight="0.41"
+                android:checked="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/linearLayout"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:id="@+id/buttonOk"
+                android:layout_below="@+id/seekBar"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/button3"
+                android:textStyle="bold|italic"
+                android:onClick="okRadius"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ffffffff"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:onClick="cancelRadius"
+                android:id="@+id/buttonCancel"
+                android:background="@drawable/button4"
+                android:textStyle="bold|italic"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="#ffffffff"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

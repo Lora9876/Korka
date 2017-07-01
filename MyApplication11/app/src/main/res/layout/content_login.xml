@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Activities.LoginActivity"
+    tools:showIn="@layout/activity_login">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- OVDE DODATI NEKI LOGO
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10sp"
+            android:layout_weight="2"/>
+        -->
+
+        <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.43"
+            android:orientation="vertical">
+
+            <AutoCompleteTextView android:id="@+id/username" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="@string/prompt_username"
+                android:inputType="textEmailAddress" android:maxLines="1"
+                android:singleLine="true" android:text="user1"/>
+
+            <EditText android:id="@+id/password" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="@string/prompt_password"
+                android:inputType="textPassword"
+                android:maxLines="1" android:singleLine="true" android:text="pass"/>
+
+            <Button android:id="@+id/button_sign_in"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:text="@string/action_sign_in"
+                android:textStyle="bold|italic"
+                android:textColor="#ffffffff"
+                android:background="@drawable/button1" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/warning"
+                android:textColor="#FF0000"
+                android:layout_gravity="center"
+                android:layout_marginRight="10sp"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:weightSum="1"
+            android:layout_weight="0.05">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_not_an_user"
+                android:id="@+id/text_not_user"
+
+                android:layout_marginRight="10sp"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:text="@string/action_register"
+
+                android:id="@+id/button_register"
+                android:textColor="#ffffffff"
+                android:textStyle="bold|italic"
+                android:background="@drawable/button3"/>
+            <!--android:background="@drawable/povrsina"-->
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
