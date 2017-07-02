@@ -28,11 +28,5 @@ public class QuestionsList {
     {
         return questions.get(index);
     }
-    public void deleteQuestion(int index)
-    {
-        questions.remove(index);
-    }
-
-
 }
 

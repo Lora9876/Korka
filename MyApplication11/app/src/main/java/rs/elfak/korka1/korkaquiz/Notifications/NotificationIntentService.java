@@ -34,12 +34,11 @@ import rs.elfak.korka1.korkaquiz.Models.UsersList;
 import rs.elfak.korka1.korkaquiz.R;
 
 /**
- * Created by klogi
- *
+ * Communicates with server. Sending users location and getting info about nearby objects
  *
  */
 public class NotificationIntentService extends IntentService {
-    private final String serverUrl = "http://192.168.0.101:80/korka/getNearby1.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/getNearby1.php";
 
     private static final int NOTIFICATION_ID = 1;
     private static final String ACTION_START = "ACTION_START";
@@ -74,24 +73,20 @@ public class NotificationIntentService extends IntentService {
         }
     }
 
-    private void processDeleteNotification(Intent intent) {
-        // Log something?
-    }
-
     private void processStartNotification() {
         if (UsersList.getInstance().getThisUser() != null) {
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(serverUrl);
 
             String message = "";
             try {
-                //napravi listu parametara username i password i izvrsi post metodu
+                //sending location
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-                nameValuePairs.add(new BasicNameValuePair("id", "1" /*userId*/));
+                nameValuePairs.add(new BasicNameValuePair("id", ((Integer)UsersList.getInstance().getThisUser().getId()).toString()));
                 nameValuePairs.add(new BasicNameValuePair("longitude", UsersList.getInstance().getThisUser().getLongitude()));
                 nameValuePairs.add(new BasicNameValuePair("latitude", UsersList.getInstance().getThisUser().getLatitude()));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -112,6 +107,7 @@ public class NotificationIntentService extends IntentService {
                 e.printStackTrace();
             }
 
+            //setting servers respond as message
             if (message != "") {
                 final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
                 builder.setContentTitle("Korka Quiz notification")

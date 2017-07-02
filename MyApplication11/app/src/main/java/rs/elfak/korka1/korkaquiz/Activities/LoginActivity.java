@@ -8,7 +8,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
 
-    private final String serverUrl = "http://192.168.0.101:80/korka/login2.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/login2.php";
     //private final String serverUrl = "http://10.10.77.217:80/korka/login1.php";
     //private final String serverUrl = getString(R.string.serverUrl)+"login1.php";
     private ProgressDialog pDialog;
@@ -97,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (GPSoff == 0) {
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("Exiting application")
+                    .setTitle("Starting application")
                     .setMessage("You need to turn Location On")
                     .setPositiveButton("Turn on", new DialogInterface.OnClickListener()
                     {
@@ -124,7 +123,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 enteredUsername = usernameText.getText().toString();
                 String enteredPassword = passwordText.getText().toString();
-                String result = "";
 
                 if (enteredUsername.equals("") || enteredPassword.equals("")) {
                     Toast.makeText(LoginActivity.this, getString(R.string.username_or_password_empty_warning), Toast.LENGTH_LONG).show();
@@ -163,15 +161,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
             new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(android.R.drawable.ic_dialog_info)
                     .setTitle("About the application")
                     .setMessage(getString(R.string.about_app))
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(onGPS);
+                            return;
                         }
                     })
                     .create().show();
@@ -295,8 +292,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         protected String doInBackground(String... params) {
 
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);

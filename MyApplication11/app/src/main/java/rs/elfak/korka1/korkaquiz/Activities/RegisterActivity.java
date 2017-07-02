@@ -47,8 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     protected String enteredUsername;
-    private final String serverUrl = "http://192.168.0.101:80/korka/register.php";
-    //private final String serverUrl = "http://10.10.77.217:80/korka/register.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/register.php";
 
     ImageView viewImage;
     Button b;
@@ -85,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
         final TextView usernameTV = (TextView) findViewById(R.id.editTextUsername);
         final TextView passwordTV = (TextView) findViewById(R.id.editTextPassword);
         final TextView emailTV = (TextView) findViewById(R.id.editTextEmail);
-
 
         String name =  nameTV.getText().toString();
         String surname = surnameTV.getText().toString();
@@ -144,8 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);
             String jsonResult = "";

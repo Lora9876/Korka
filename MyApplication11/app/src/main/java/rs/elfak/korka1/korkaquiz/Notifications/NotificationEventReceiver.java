@@ -11,8 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by klogi
- *
  * WakefulBroadcastReceiver used to receive intents fired from the AlarmManager for showing notifications
  * and from the notification itself if it is deleted.
  */
@@ -21,14 +19,12 @@ public class NotificationEventReceiver extends WakefulBroadcastReceiver {
     private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
     private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
 
-    private static final int NOTIFICATIONS_INTERVAL_IN_HOURS = 2;
-
     public static void setupAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent alarmIntent = getStartPendingIntent(context);
+        //setting a notifications interval
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                getTriggerAt(new Date()), ((Double)(AlarmManager.INTERVAL_FIFTEEN_MINUTES * 0.1)).longValue(),
-                alarmIntent);
+                getTriggerAt(new Date()), ((Double)(AlarmManager.INTERVAL_FIFTEEN_MINUTES * 0.1)).longValue(), alarmIntent);
     }
 
     public static void cancelAlarm(Context context) {
@@ -40,7 +36,6 @@ public class NotificationEventReceiver extends WakefulBroadcastReceiver {
     private static long getTriggerAt(Date now) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        //calendar.add(Calendar.HOUR, NOTIFICATIONS_INTERVAL_IN_HOURS);
         return calendar.getTimeInMillis();
     }
 

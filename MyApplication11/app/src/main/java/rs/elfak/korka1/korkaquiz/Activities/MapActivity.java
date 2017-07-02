@@ -2,12 +2,14 @@ package rs.elfak.korka1.korkaquiz.Activities;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -64,15 +66,19 @@ import rs.elfak.korka1.korkaquiz.R;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    public static final float FRIEND = 1;
+    public static final float OTHER_USER = 2;
+    public static final float QUESTION_FAR = 3;
+    public static final float QUESTION_NEAR = 4;
 
-    private final String serverUrl = "http://192.168.2.60:80/korka/updateLocation.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/updateLocation.php";
     protected int radius;
-    protected boolean easy, medium, hard, allUsers;
+    protected boolean easy, medium, hard, allUsers; //variables used to control searching options
 
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
 
-    LatLng latLng;
+    LatLng latLng; //this users location
     GoogleMap mGoogleMap;
     SupportMapFragment mFragment;
     Marker currLocationMarker;
@@ -220,8 +226,42 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         {
             @Override
             public boolean onMarkerClick(Marker arg0) {
-                //if(arg0.getTitle().equals("MyHome")) // if marker source is clicked
-                Toast.makeText(MapActivity.this, arg0.getTitle(), Toast.LENGTH_LONG).show();// display toast
+                if(arg0.getAlpha()==OTHER_USER)
+                    Toast.makeText(MapActivity.this, arg0.getTitle(), Toast.LENGTH_LONG).show();// display toast
+
+                if(arg0.getAlpha()==FRIEND)
+                {
+                    new AlertDialog.Builder(MapActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setTitle("Friends info")
+                            .setMessage(arg0.getTitle())
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            })
+                            .create().show();
+                }
+
+                if(arg0.getAlpha()==QUESTION_FAR)
+                    Toast.makeText(MapActivity.this, arg0.getTitle(), Toast.LENGTH_LONG).show();// display toast
+
+                if(arg0.getAlpha()==QUESTION_NEAR)
+                {
+                    new AlertDialog.Builder(MapActivity.this)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setTitle("Questions info")
+                            .setMessage(arg0.getTitle())
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            })
+                            .create().show();
+                }
+
                 return true;
             }
         });
@@ -233,12 +273,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toast.makeText(this,"onConnected",Toast.LENGTH_SHORT).show();
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            //place marker at current position
-            //mGoogleMap.clear();
 
-            //POSTO LAPTOP NE ZNA SVOJU LOKACIJU, OVDE CU SAMO ZA POTREBE TESTIRANJA DA STAVIM FIKSNE
             latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            //latLng = new LatLng(43.333435, 21.892306);
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.title("Current Position");
@@ -246,8 +282,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             currLocationMarker = mGoogleMap.addMarker(markerOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
+
         addUserMarkers();
         addQuestionsMarkers();
+
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(5000); //5 seconds
         mLocationRequest.setFastestInterval(3000); //3 seconds
@@ -271,22 +309,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {
 
         //place marker at current position
-        //mGoogleMap.clear();
         if (currLocationMarker != null) {
             currLocationMarker.remove();
         }
-        //POSTO LAPTOP NE ZNA SVOJU LOKACIJU, OVDE CU SAMO ZA POTREBE TESTIRANJA DA STAVIM FIKSNE
         latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        //latLng = new LatLng(43.333435, 21.892306);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         currLocationMarker = mGoogleMap.addMarker(markerOptions);
-
-        //zoom to current position:
-        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
         //UPDATE LOCATION DATA FROM SERVER AND THEN UPDATE MARKERS
         AsyncDataClass asyncRequestObject = new AsyncDataClass();
@@ -317,17 +349,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     LatLng loc = new LatLng(Double.parseDouble(user.getLatitude()), Double.parseDouble(user.getLongitude()));
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(loc);
-                    if(user.getImgString()==null)
+                    if(!me.checkIfFriends(user.getId()))
                     {
                         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.user1));
-                        markerOptions.title(user.getUsername());
+                        markerOptions.title("Username: "+user.getUsername());
+                        markerOptions.alpha(OTHER_USER);
                     }
                     else
                     {
-                        if(!me.checkIfFriends(user.getId()))
+                        if(user.getImgString()==null)
                         {
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.user1));
-                            markerOptions.title(user.getUsername());
                         }
                         else
                         {
@@ -338,8 +370,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(decodedImage));
                             }
-                            markerOptions.title(user.getUsername()+"\n"+user.getName() + " " + user.getSurname()+"\nScore: "+user.getScore());
                         }
+                        markerOptions.title("Username: "+user.getUsername()+"\n"+"Name and surname:"+user.getName() + " " + user.getSurname()+"\nEmail: "+ user.getEmail()+"\nScore: "+ user.getScore());
+                        markerOptions.alpha(FRIEND);
                     }
                     Marker marker = mGoogleMap.addMarker(markerOptions);
                     otherUsers.add(marker);
@@ -376,11 +409,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.qr3));
                             break;
                     }
-                    if(distance<=20)
-                        markerOptions.title(qu.getQusetion()+"\ncorrect answer: "+qu.getAnswers().get(qu.getCorrect()));
-                    else
+                    if(distance<=40) {
+                        markerOptions.title(qu.getQusetion() + "\ncorrect answer: " + qu.getAnswers().get(qu.getCorrect()));
+                        markerOptions.alpha(QUESTION_NEAR);
+                    }
+                    else {
                         markerOptions.title("You have to be closer to the question to see its details");
-
+                        markerOptions.alpha(QUESTION_FAR);
+                    }
                     Marker marker = mGoogleMap.addMarker(markerOptions);
                     questions.add(marker);
                 }
@@ -398,8 +434,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         @Override
         protected Void doInBackground(String... params) {
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(serverUrl);

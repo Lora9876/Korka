@@ -47,9 +47,9 @@ import rs.elfak.korka1.korkaquiz.Models.UsersList;
 import rs.elfak.korka1.korkaquiz.R;
 
 public class QuestionActivity extends AppCompatActivity {
-    private final String serverUrl = "http://192.168.0.101:80/korka/updateScore.php";
-    private final String serverUrl1 = "http://192.168.0.101:80/korka/getQuestionImage.php";
-    //private final String serverUrl = getString(R.string.serverUrl)+"updateScore.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/updateScore.php";
+    private final String serverUrl1 = "http://10.10.77.217:80/korka/getQuestionImage.php";
+
     public static final int SHOW = 6;
     public static final int START = 0;
     public static final int END = 4;
@@ -81,7 +81,6 @@ public class QuestionActivity extends AppCompatActivity {
                 //UCITAVANJE SLIKE
                 AsyncDataClassImage asyncRequestObjectI = new AsyncDataClassImage();
                 asyncRequestObjectI.execute(serverUrl1,tmp.toString());
-
 
                 question = QuestionsList.getInstance().getList().get(tmp);
                 ArrayList<String> a = new ArrayList<String>();
@@ -150,8 +149,8 @@ public class QuestionActivity extends AppCompatActivity {
         protected Integer doInBackground(String... params) {
 
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(serverUrl);
@@ -203,8 +202,8 @@ public class QuestionActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);

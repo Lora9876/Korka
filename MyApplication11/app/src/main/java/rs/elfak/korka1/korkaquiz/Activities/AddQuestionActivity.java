@@ -48,15 +48,13 @@ import rs.elfak.korka1.korkaquiz.Models.QuestionsList;
 import rs.elfak.korka1.korkaquiz.R;
 
 public class AddQuestionActivity extends AppCompatActivity {
-    private final String serverUrl = "http://192.168.0.101:80/korka/addQuestion.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/addQuestion.php";
     //private final String serverUrl = "http://10.10.77.217:80/korka/addQuestion.php";
-    //private final String serverUrl = getString(R.string.serverUrl)+"addQuestion.php";
     protected String placeLat, placeLon;
     protected String A,B,C,D,correct, question;
     protected Integer diff;
     private ProgressDialog pDialog;
     ImageView viewImage;
-    Button b;
 
     String picturePath;
 
@@ -66,7 +64,6 @@ public class AddQuestionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_question);
 
         try {
-
             Intent mapIntent = getIntent();
             Bundle mapBundle = mapIntent.getExtras();
             if (mapBundle != null) {
@@ -87,7 +84,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         final RadioGroup radioGroup=(RadioGroup) findViewById(R.id.radioGroup);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
 
-        b=(Button)findViewById(R.id.questionPictureButton);
+        Button b=(Button)findViewById(R.id.questionPictureButton);
         viewImage=(ImageView)findViewById(R.id.questionImageView);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +94,6 @@ public class AddQuestionActivity extends AppCompatActivity {
         });
 
         Button button = (Button) findViewById(R.id.button);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,8 +173,8 @@ public class AddQuestionActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);
             String jsonResult = "";
@@ -223,6 +219,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 return;
             }
             try {
+                    //adding new question to local list
                     JSONObject resultObject = new JSONObject(result);
                     int id = resultObject.getInt("questionId");
                     Question qu = new Question();

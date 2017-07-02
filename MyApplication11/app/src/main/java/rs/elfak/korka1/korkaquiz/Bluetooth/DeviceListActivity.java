@@ -27,12 +27,6 @@ import rs.elfak.korka1.korkaquiz.R;
  * Activity in the result Intent.
  */
 public class DeviceListActivity extends Activity {
-
-    /**
-     * Tag for Log
-     */
-    private static final String TAG = "DeviceListActivity";
-
     /**
      * Return Intent extra
      */

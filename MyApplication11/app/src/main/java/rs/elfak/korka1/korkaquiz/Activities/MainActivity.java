@@ -47,11 +47,9 @@ import rs.elfak.korka1.korkaquiz.R;
 
 public class MainActivity extends AppCompatActivity {
     ComponentName service;
-    private final String serverUrl = "http://192.168.0.101:80/korka/getUsers.php";
-    private final String serverUrl2 = "http://192.168.0.101:80/korka/onExit.php";
-    private final String serverUrl1 = "http://192.168.0.101:80/korka/getFriendsImages.php";
-    //private final String serverUrl = "http://10.10.77.217:80/korka/getUsers.php";
-    //private final String serverUrl = getString(R.string.serverUrl)+"getUsers.php";
+    private final String serverUrl = "http://10.10.77.217:80/korka/getUsers.php";
+    private final String serverUrl2 = "http://10.10.77.217:80/korka/onExit.php";
+    private final String serverUrl1 = "http://10.10.77.217:80/korka/getFriendsImages.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AsyncDataClassImage asyncRequestObject = new AsyncDataClassImage();
                 asyncRequestObject.execute(serverUrl1, UsersList.getInstance().getMyId().toString());
-
-                //Intent i = new Intent(MainActivity.this, MapActivity.class);
-                //startActivity(i);
             }
         });
 
@@ -109,10 +104,6 @@ public class MainActivity extends AppCompatActivity {
             JSONAsyncTask asyncRequestObject = new JSONAsyncTask();
             asyncRequestObject.execute(serverUrl);
         }
-
-        //pretpostavljam da je ovo za asinhronu razmenu lokacije
-        //Intent intentMyService = new Intent(this, MyLocationService.class);
-        //service = startService(intentMyService);
     }
 
     //PADAJUCI MENI
@@ -154,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
     class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
         ProgressDialog dialog;
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -209,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             dialog.cancel();
 
-            //postavkja ovog korisnika
+            //postavlja ovog korisnika
             UsersList.getInstance().setThisUserById(UsersList.getInstance().getMyId());
 
             if(result == false) {
@@ -233,19 +223,16 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);
 
             try {
-                //napravi listu parametara username i password i izvrsi post metodu
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                 nameValuePairs.add(new BasicNameValuePair("id", params[1]));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                //primi odgovor na svoj post od servera
                 HttpResponse response = httpClient.execute(httpPost);
                 HttpEntity entity = response.getEntity();
                 String data = EntityUtils.toString(entity);
@@ -253,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 if(data.equals("") || data == null)
                     return null;
 
+                //preuzima slike prijatelja jer su potrebni za mapu
                 JSONObject jsono = new JSONObject(data);
                 JSONArray jarray = jsono.getJSONArray("friends");
 
@@ -300,12 +288,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
 
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);
             try {
+                //salje id da bi server zabelezio promenu statusa na 0
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
                 nameValuePairs.add(new BasicNameValuePair("id", params[1]));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

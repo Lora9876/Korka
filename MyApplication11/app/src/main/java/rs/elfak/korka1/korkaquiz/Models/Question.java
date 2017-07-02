@@ -1,7 +1,5 @@
 package rs.elfak.korka1.korkaquiz.Models;
 
-import android.graphics.Bitmap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +15,6 @@ public class Question {
     private ArrayList<String> answers;
     private String longitude;
     private String latitude;
-    private Bitmap questionImage;
     private Integer correct;
     private Integer difficulty;
 
@@ -28,16 +25,6 @@ public class Question {
     public void setDifficulty(Integer difficulty) {
         this.difficulty = difficulty;
     }
-
-    public String getImgString() {
-        return imgString;
-    }
-
-    public void setImgString(String imgString) {
-        this.imgString = imgString;
-    }
-
-    private String imgString;
 
     public Integer getCorrect() {
         return correct;
@@ -81,9 +68,6 @@ public class Question {
         this.question = txt;
     }
 
-    public void addAnswer(String a) {
-        answers.add(a);
-    }
     public ArrayList<String> getAnswers() {
         return answers;
     }
@@ -92,14 +76,8 @@ public class Question {
         this.answers = ans;
     }
 
-    private static class SingletonHolder{
-        public static final User instance = new User();
-
-    }
-
     public void setFromJSON(JSONObject jsonObject)
     {
-
         try {
             if(jsonObject.has("question"))
                 this.setQuestion(jsonObject.get("question").toString());
@@ -119,8 +97,6 @@ public class Question {
             if(jsonObject.has("answerD"))
                 answers1.add(jsonObject.get("answerD").toString());
             this.setAnswers(answers1);
-            //this.setAnswers(jsonObject.get("answers").toString());
-            //this.setImgString(jsonObject.get("img_uri").toString());
 
             if(jsonObject.has("id"))
                 this.setId(Integer.parseInt(jsonObject.get("id").toString()));
@@ -131,13 +107,5 @@ public class Question {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public Bitmap getQuestionImage() {
-        return questionImage;
-    }
-
-    public void setQuestionImage(Bitmap qImage) {
-        this.questionImage = qImage;
     }
 }

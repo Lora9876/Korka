@@ -23,7 +23,6 @@ public class User {
     private ArrayList<Integer> friendsIds;
     private String longitude;
     private String latitude;
-    //private Bitmap userImage;
 
     public boolean isStatus() {
         return status;
@@ -57,8 +56,6 @@ public class User {
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-
-
 
     public int getId() {
         return id;
@@ -180,14 +177,13 @@ public class User {
                     this.setFriendsIds(listdata);
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-   public boolean checkIfFriends(Integer friendId){ return friendsIds.contains(friendId);}
-
+    public boolean checkIfFriends(Integer friendId){ return friendsIds.contains(friendId);}
+    public void addFriend(Integer friendId){ friendsIds.add(friendId);}
 
     @Override
     public String toString() { return  score+" points, "+name+" "+surname+" ("+ username +")";}

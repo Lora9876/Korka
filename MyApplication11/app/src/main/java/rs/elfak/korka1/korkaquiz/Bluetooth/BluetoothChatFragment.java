@@ -14,9 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,47 +46,25 @@ import rs.elfak.korka1.korkaquiz.R;
  */
 public class BluetoothChatFragment extends Fragment {
 
-    private static final String TAG = "BluetoothChatFragment";
-    private final String serverUrl = "http://192.168.2.60:80/korka/addFriend.php";
-    private String friendIdS;
-    private boolean sender=false;
+    private final String serverUrl = "http://10.10.77.217:80/korka/addFriend.php";
+    private String friendIdS; //id of user we are trying to connect with
+    private boolean sender=false; //is this device initiator of request
 
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
     private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
     private static final int REQUEST_ENABLE_BT = 3;
 
-
     private Button mSendButton;
-
-
     private Button mChooseButton;
-
-    /**
-     * Name of the connected device
-     */
-    private String mConnectedDeviceName = null;
-
-    /**
-     * Array adapter for the conversation thread
-     */
-
-
-    /**
-     * String buffer for outgoing messages
-     */
-    private StringBuffer mOutStringBuffer;
-
-    /**
-     * Local Bluetooth adapter
-     */
-    private BluetoothAdapter mBluetoothAdapter = null;
-
-    /**
-     * Member object for the chat services
-     */
-    private BluetoothChatService mChatService = null;
     private Button mDiscoverableButton;
+
+    private String mConnectedDeviceName = null; //Name of the connected device
+    private StringBuffer mOutStringBuffer; //String buffer for outgoing messages
+
+    private BluetoothAdapter mBluetoothAdapter = null; //Local Bluetooth adapter
+
+    private BluetoothChatService mChatService = null; //Member object for the chat services
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +80,6 @@ public class BluetoothChatFragment extends Fragment {
             activity.finish();
         }
     }
-
 
     @Override
     public void onStart() {
@@ -146,8 +120,7 @@ public class BluetoothChatFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_bluetooth_chat, container, false);
     }
 
@@ -175,17 +148,10 @@ public class BluetoothChatFragment extends Fragment {
      * Set up the UI and background operations for chat.
      */
     private void setupChat() {
-
-        // Initialize the array adapter for the conversation thread
-
-
-        // Initialize the compose field with a listener for the return key
-
-
         // Initialize the send button with a listener that for click events
         mSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Send a message using content of the edit text widget
+                // Send a message with this users id
                 View view = getView();
                 if (null != view) {
                     sender=true;
@@ -239,11 +205,6 @@ public class BluetoothChatFragment extends Fragment {
     }
 
     /**
-     * The action listener for the EditText widget, to listen for the return key
-     */
-
-
-    /**
      * Updates the status on the action bar.
      *
      * @param resId a string resource ID
@@ -277,8 +238,8 @@ public class BluetoothChatFragment extends Fragment {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        addFriendship(readMessage);
                                         sendId();
+                                        addFriendship(readMessage);
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -303,8 +264,7 @@ public class BluetoothChatFragment extends Fragment {
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
                     if (null != activity) {
-                        Toast.makeText(activity, "Connected to "
-                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Connected to " + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case Constants.MESSAGE_TOAST:
@@ -354,14 +314,14 @@ public class BluetoothChatFragment extends Fragment {
      */
     private void connectDevice(Intent data, boolean secure) {
         // Get the device MAC address
-        String address = data.getExtras()
-                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+        String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
         // Get the BluetoothDevice object
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         // Attempt to connect to the device
         mChatService.connect(device, secure);
     }
 
+    /*used buttons instead of these
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_bluetooth_chat, menu);
@@ -389,37 +349,19 @@ public class BluetoothChatFragment extends Fragment {
             }
         }
         return false;
-    }
+    }*/
 
-
+    //inform server of new friendship and add it to local friends list
     public void addFriendship(String msg)
     {
-        /*if(msg.equals("done")) {
-            Toast.makeText(getActivity(), "You are now friends!",
-                    Toast.LENGTH_SHORT).show();
-        }else {
-           final int friendId = Integer.parseInt(msg);
-            friendIdS = ((Integer)friendId).toString();
-            ExecutorService transThread = Executors.newSingleThreadExecutor();
-            transThread.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {*/
-                        friendIdS = msg;
-                        if(!UsersList.getInstance().getThisUser().checkIfFriends(Integer.parseInt(friendIdS)))
-                        {
-                            AsyncDataClass asyncRequestObject = new AsyncDataClass();
-                            asyncRequestObject.execute(serverUrl, UsersList.getInstance().getMyId().toString(), friendIdS);//((Integer)friendId).toString());
-                        }
-                        else
-                            Toast.makeText(getContext(), "You are already friends with this user", Toast.LENGTH_SHORT).show();
-                   /* } catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }*/
+        friendIdS = msg;
+        if(!UsersList.getInstance().getThisUser().checkIfFriends(Integer.parseInt(friendIdS)))
+        {
+            AsyncDataClass asyncRequestObject = new AsyncDataClass();
+            asyncRequestObject.execute(serverUrl, UsersList.getInstance().getMyId().toString(), friendIdS);//((Integer)friendId).toString());
+        }
+        else
+            Toast.makeText(getContext(), "You are already friends with this user", Toast.LENGTH_SHORT).show();
     }
 
     public void ignoreFriendship()
@@ -437,8 +379,8 @@ public class BluetoothChatFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             HttpParams httpParameters = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
-            HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 15000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
             HttpClient httpClient = new DefaultHttpClient(httpParameters);
             HttpPost httpPost = new HttpPost(params[0]);
             String jsonResult = "";

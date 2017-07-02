@@ -2,7 +2,6 @@
     <string name="app_name">KorkaQuiz</string>
     <string name="action_about">About</string>
     <string name="about_app">KorkaQuiz is an explorers quiz application witch allows users to explore city learning about it, test their knowledge and add their own questions.</string>
-    <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="getting_location">Please Turn on location service on your phone and wait for a moment, then repete your request. App is currently calculating yout location.</string>
@@ -28,18 +27,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- rs.elfak.korka1.korkaquiz.Bluetooth -->
-
-    <!--  BluetoothChat -->
     <string name="send">Add friend</string>
     <string name="choose_device">Choose device</string>
     <string name="not_connected">You are not connected to a device</string>
-    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving this form.</string>
     <string name="title_connecting">connecting...</string>
     <string name="title_connected_to">connected to </string>
     <string name="title_not_connected">not connected</string>
-
-    <!--  DeviceListActivity -->
     <string name="scanning">scanning for devices...</string>
     <string name="select_device">select a device to connect</string>
     <string name="none_paired">No devices have been paired</string>
@@ -47,8 +41,6 @@
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Scan for devices</string>
-
-    <!-- Options Menu -->
     <string name="secure_connect">Connect a device - Secure</string>
     <string name="insecure_connect">Connect a device - Insecure</string>
     <string name="discoverable">Make discoverable</string>
