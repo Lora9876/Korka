@@ -17,10 +17,15 @@ if (isset($_POST['myId']) && isset($_POST['friendId'])) {
 
     // connecting to db
     $db = new DB_CONNECT();
+$result1 = mysql_query("SELECT id FROM friendstb WHERE userid='$myId' AND friendid='$friendId'" ) or die(mysql_error());
 
+// check for empty result
+if (mysql_num_rows($result1) == 0) {
+    // looping through all results
+    
 		// mysql inserting a new row
 		$result = mysql_query("INSERT INTO friendstb (userid, friendid) VALUES('$myId','$friendId')");
-		$result1 = mysql_query("INSERT INTO friendstb (userid, friendid) VALUES('$friendId','$myId')");
+		//$result1 = mysql_query("INSERT INTO friendstb (userid, friendid) VALUES('$friendId','$myId')");
 
 		// check if row inserted or not
 		if ($result && $result1) {
@@ -38,7 +43,15 @@ if (isset($_POST['myId']) && isset($_POST['friendId'])) {
 			// echoing JSON response
 			echo json_encode($response);
 		}
-	
+	}
+	else {
+			// failed to insert row
+			$response["success"] = 0;
+			$response["message"] = "Already friends.";
+			
+			// echoing JSON response
+			echo json_encode($response);
+		}
 } else {
     // required field is missing
     $response["success"] = 0;
