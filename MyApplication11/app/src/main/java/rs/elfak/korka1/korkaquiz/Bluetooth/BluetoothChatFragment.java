@@ -40,8 +40,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import rs.elfak.korka1.korkaquiz.Models.UsersList;
 import rs.elfak.korka1.korkaquiz.R;
@@ -264,7 +262,7 @@ public class BluetoothChatFragment extends Fragment {
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                    Toast.makeText(activity, writeMessage, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, writeMessage, Toast.LENGTH_SHORT).show();
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -297,7 +295,7 @@ public class BluetoothChatFragment extends Fragment {
                             Toast.makeText(activity, "Friend request ignored", Toast.LENGTH_SHORT).show();
                         else
                             addFriendship(readMessage);
-                        
+
                             sender=false;
                     }
                     break;
@@ -396,7 +394,7 @@ public class BluetoothChatFragment extends Fragment {
 
     public void addFriendship(String msg)
     {
-        if(msg.equals("done")) {
+        /*if(msg.equals("done")) {
             Toast.makeText(getActivity(), "You are now friends!",
                     Toast.LENGTH_SHORT).show();
         }else {
@@ -406,21 +404,22 @@ public class BluetoothChatFragment extends Fragment {
             transThread.submit(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        if(!UsersList.getInstance().getThisUser().checkIfFriends(friendId))
+                    try {*/
+                        friendIdS = msg;
+                        if(!UsersList.getInstance().getThisUser().checkIfFriends(Integer.parseInt(friendIdS)))
                         {
                             AsyncDataClass asyncRequestObject = new AsyncDataClass();
-                            asyncRequestObject.execute(serverUrl, UsersList.getInstance().getMyId().toString(), ((Integer)friendId).toString());
+                            asyncRequestObject.execute(serverUrl, UsersList.getInstance().getMyId().toString(), friendIdS);//((Integer)friendId).toString());
                         }
                         else
                             Toast.makeText(getContext(), "You are already friends with this user", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e)
+                   /* } catch (Exception e)
                     {
                         e.printStackTrace();
                     }
                 }
             });
-        }
+        }*/
     }
 
     public void ignoreFriendship()

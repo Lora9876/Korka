@@ -65,7 +65,7 @@ import rs.elfak.korka1.korkaquiz.R;
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
 
-    private final String serverUrl = "http://192.168.0.101:80/korka/updateLocation.php";
+    private final String serverUrl = "http://192.168.2.60:80/korka/updateLocation.php";
     protected int radius;
     protected boolean easy, medium, hard, allUsers;
 
@@ -324,16 +324,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                     else
                     {
-                        if(user.getImgString().equals("") || !me.checkIfFriends(user.getId()))
+                        if(!me.checkIfFriends(user.getId()))
                         {
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.user1));
                             markerOptions.title(user.getUsername());
                         }
                         else
                         {
-                            byte[] imageBytes = Base64.decode(user.getImgString(), Base64.URL_SAFE);
-                            Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(decodedImage));
+                            if(user.getImgString().equals(""))
+                                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.user1));
+                            else {
+                                byte[] imageBytes = Base64.decode(user.getImgString(), Base64.URL_SAFE);
+                                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(decodedImage));
+                            }
                             markerOptions.title(user.getUsername()+"\n"+user.getName() + " " + user.getSurname()+"\nScore: "+user.getScore());
                         }
                     }
