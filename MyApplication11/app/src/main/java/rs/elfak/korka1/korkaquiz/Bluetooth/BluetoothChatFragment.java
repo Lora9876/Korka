@@ -3,6 +3,7 @@ package rs.elfak.korka1.korkaquiz.Bluetooth;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,8 +52,9 @@ import rs.elfak.korka1.korkaquiz.R;
 public class BluetoothChatFragment extends Fragment {
 
     private static final String TAG = "BluetoothChatFragment";
-    private final String serverUrl = "http://192.168.0.101:80/korka/addFriend.php";
+    private final String serverUrl = "http://192.168.2.60:80/korka/addFriend.php";
     private String friendIdS;
+    private boolean sender=false;
 
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
@@ -187,8 +190,9 @@ public class BluetoothChatFragment extends Fragment {
                 // Send a message using content of the edit text widget
                 View view = getView();
                 if (null != view) {
-
-                    sendMessage(String.valueOf(UsersList.getInstance().getMyId()));
+                    sender=true;
+                    sendId();
+                    //sendMessage(String.valueOf(UsersList.getInstance().getMyId()));
                 }
             }
         });
@@ -265,9 +269,37 @@ public class BluetoothChatFragment extends Fragment {
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                   // Toast.makeText(activity, readMessage, Toast.LENGTH_SHORT).show();
-                    addFriendship(readMessage);
+                    final String readMessage = new String(readBuf, 0, msg.arg1);
+                    // Toast.makeText(activity, readMessage, Toast.LENGTH_SHORT).show();
+                    if(!sender) {
+                        new AlertDialog.Builder(getContext())
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setTitle("Friend request")
+                                .setMessage("Do you want to become friends with user: " + UsersList.getInstance().getUserById(Integer.parseInt(readMessage)).getUsername())
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        addFriendship(readMessage);
+                                        sendId();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ignoreFriendship();
+                                    }
+                                })
+                                .create().show();
+                    }
+                    else
+                    {
+                        if(readMessage.equals("-1"))
+                            Toast.makeText(activity, "Friend request ignored", Toast.LENGTH_SHORT).show();
+                        else
+                            addFriendship(readMessage);
+                        
+                            sender=false;
+                    }
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -375,11 +407,13 @@ public class BluetoothChatFragment extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        if(!UsersList.getInstance().getUserById(UsersList.getInstance().getMyId()).checkIfFriends(friendId))
+                        if(!UsersList.getInstance().getThisUser().checkIfFriends(friendId))
                         {
                             AsyncDataClass asyncRequestObject = new AsyncDataClass();
                             asyncRequestObject.execute(serverUrl, UsersList.getInstance().getMyId().toString(), ((Integer)friendId).toString());
                         }
+                        else
+                            Toast.makeText(getContext(), "You are already friends with this user", Toast.LENGTH_SHORT).show();
                     } catch (Exception e)
                     {
                         e.printStackTrace();
@@ -388,6 +422,16 @@ public class BluetoothChatFragment extends Fragment {
             });
         }
     }
+
+    public void ignoreFriendship()
+    {
+        sendMessage(String.valueOf(-1));
+    }
+    public void sendId()
+    {
+        sendMessage(String.valueOf(UsersList.getInstance().getMyId()));
+    }
+
 
     //SERVER
     private class AsyncDataClass extends AsyncTask<String, Void, String> {
@@ -428,7 +472,8 @@ public class BluetoothChatFragment extends Fragment {
                 return;
             }
             //Intent intent = new Intent(AddQuestionActivity.this, MainActivity.class);
-            Toast.makeText(getActivity(),"You are now friends with user "+friendIdS, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "You are now friends with user " + friendIdS, Toast.LENGTH_LONG).show();
+            UsersList.getInstance().getThisUser().addFriend(Integer.parseInt(friendIdS));
             //startActivity(intent);
             //finish();
         }
